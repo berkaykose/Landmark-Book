@@ -8,12 +8,53 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var placeNameArray = ["Colosseum","Eifel Tower","Kremlin","Taj Mahal","Stonehenge","Great Wall"]
+    var imageArray = [UIImage]()
+    
+   
+    @IBOutlet weak var tableView: UITableView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        imageArray.append(UIImage(named: "colosseum")!)
+        imageArray.append(UIImage(named: "eifeltower")!)
+        imageArray.append(UIImage(named: "kremlin")!)
+        imageArray.append(UIImage(named: "tajmahal")!)
+        imageArray.append(UIImage(named: "stonehenge")!)
+        imageArray.append(UIImage(named: "greatwall")!)
+        
+        
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return placeNameArray.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ViewCell") as! TableViewCell
+        
+        cell.placeLabel.text = placeNameArray[indexPath.row]
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "SecondStoryboardID") as! SecondViewController
+        
+        vc.selectedImage = imageArray[indexPath.row]
+        vc.selectedName = placeNameArray[indexPath.row]
+        
+        self.show(vc, sender: nil)
+    }
+    
 
 
 }
